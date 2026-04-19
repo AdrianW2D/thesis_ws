@@ -1,15 +1,22 @@
 <launch>
+  <arg name="port_name" default="can0" />
+  <arg name="simulated_robot" default="false" />
   <arg name="odom_topic_name" default="odom" />
+  <arg name="is_scout_mini" default="true" />
 
   <!--
     Phase 1 bridge only.
     The base driver remains owned by the platform workspace on the deployed
     machine. The local reference copy is analysis-only.
 
-    Upstream scout_minimal.launch fixes port_name and simulated_robot with
-    value=..., so this wrapper must not try to override them.
+    This wrapper intentionally targets scout_mini_base.launch instead of
+    scout_minimal.launch so that thesis scenario composition does not pull in
+    a second joint_state_publisher / robot_state_publisher chain.
   -->
-  <include file="$(find scout_bringup)/launch/scout_minimal.launch">
+  <include file="$(find scout_base)/launch/scout_mini_base.launch">
+    <arg name="port_name" value="$(arg port_name)" />
+    <arg name="is_scout_mini" value="$(arg is_scout_mini)" />
+    <arg name="simulated_robot" value="$(arg simulated_robot)" />
     <arg name="odom_topic_name" value="$(arg odom_topic_name)" />
   </include>
 </launch>
