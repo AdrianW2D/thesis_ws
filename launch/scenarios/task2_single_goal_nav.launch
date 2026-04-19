@@ -1,19 +1,42 @@
 <launch>
-  <arg name="map_id" default="" />
-  <arg name="start_rviz" default="false" />
+  <arg name="map_id" default="task1_lab_v01" />
+  <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
+  <arg name="use_reference_sensing" default="true" />
+  <arg name="use_reference_base" default="true" />
+  <arg name="start_rviz" default="true" />
   <arg name="record_bag" default="false" />
-
-  <include file="$(dirname)/../platform/reference_base_bridge.launch" />
-  <include file="$(dirname)/../platform/reference_sensing_bridge.launch" />
-  <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
-    <arg name="map_id" value="$(arg map_id)" />
-  </include>
+  <arg name="session_name" default="task2_single_goal_nav" />
+  <arg name="rviz_config" default="$(find scout_description)/rviz/rviz_navigation.rviz" />
+  <arg name="bag_prefix" default="$(env HOME)/thesis_ws/bags/navigation/$(arg session_name)" />
+  <arg name="initial_pose_x" default="0.0" />
+  <arg name="initial_pose_y" default="0.0" />
+  <arg name="initial_pose_a" default="0.0" />
 
   <!--
-    Phase 1 orchestration shell for task 2.
-    Later this file should own:
-    - map selection from config/maps/map_refs.yaml
-    - thesis-local localization and navigation overlays
-    - goal dispatch and run summary outputs
+    Task 2 formal scenario entry.
+
+    Current defaults are aligned with config/maps/map_refs.yaml where
+    active_map_id is task1_lab_v01. When launched via the thesis helper
+    script, the map_id and map_file arguments are resolved from that config.
   -->
+  <include if="$(arg use_reference_base)" file="$(dirname)/../platform/reference_base_bridge.launch" />
+  <include if="$(arg use_reference_sensing)" file="$(dirname)/../platform/reference_sensing_bridge.launch" />
+  <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
+    <arg name="map_id" value="$(arg map_id)" />
+    <arg name="map_file" value="$(arg map_file)" />
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
+  </include>
+
+  <include if="$(arg start_rviz)" file="$(dirname)/../tools/rviz_session.launch">
+    <arg name="profile" value="task2_single_goal_nav" />
+    <arg name="config_file" value="$(arg rviz_config)" />
+  </include>
+
+  <include if="$(arg record_bag)" file="$(dirname)/../tools/record_session.launch">
+    <arg name="session_name" value="$(arg session_name)" />
+    <arg name="output_prefix" value="$(arg bag_prefix)" />
+    <arg name="topics" value="/map /odom /scan /amcl_pose /tf /tf_static /move_base_simple/goal /move_base/status /move_base/GlobalPlanner/plan /move_base/DWAPlannerROS/local_plan /cmd_vel" />
+  </include>
 </launch>

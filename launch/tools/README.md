@@ -13,6 +13,11 @@ Task1 当前使用：
 - `rviz_session.launch`：正式的 thesis RViz 观察入口
 - `record_session.launch`：最小 rosbag 入口，按需开启
 
+Task2 当前也使用：
+
+- `rviz_session.launch`：通过 thesis 入口拉起导航观察界面，当前默认引用 `rviz_navigation.rviz`
+- `record_session.launch`：按需记录地图、定位、目标点与路径相关 topic
+
 当前仍未做的事情：
 
 - 复杂 recording 自动化

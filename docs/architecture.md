@@ -94,6 +94,25 @@ Task1 是 thesis_ws 中第一条正式收口的实验链，目标不是调优建
 - `maps/generated/`：地图输出目录
 - `results/mapping/`：结果归档目录
 
+## Task2 在 thesis_ws 中的角色
+
+Task2 是 thesis_ws 中第二条正式收口的实验链，目标不是优化导航效果，而是让 thesis_ws 接管：
+
+- 当前活动地图引用
+- 定位与导航场景入口
+- RViz 观察入口
+- 导航结果归档规范
+
+当前 Task2 的组织方式是：
+
+- `scenarios/task2_single_goal_nav.launch`：正式场景入口
+- `platform/reference_localization_nav_core.launch`：`map_server + amcl + move_base`
+- `tools/rviz_session.launch`：观察入口
+- `tools/record_session.launch`：最小记录入口
+- `config/maps/map_refs.yaml`：地图索引
+- `scripts/run_task2_active_map.sh`：active map 启动脚本
+- `results/navigation/`：结果归档目录
+
 ## 为什么不能直接把官方耦合 launch 当 thesis 正式入口
 
 从本地平级 `catkin_ws` 的上游结构现状看：

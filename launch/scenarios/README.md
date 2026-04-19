@@ -11,7 +11,7 @@
 当前预留任务：
 
 - `task1_mapping_session.launch`：Task1 正式场景入口，当前已收口为建图展示入口
-- `task2_single_goal_nav.launch`
+- `task2_single_goal_nav.launch`：Task2 正式场景入口，当前已收口为定位 + 单点导航入口
 - `task3_patrol_stub.launch`
 
 Task1 当前的 smoke test 启动方式：
@@ -19,3 +19,9 @@ Task1 当前的 smoke test 启动方式：
 - 当前场景 launch 位于工作空间根目录 `launch/` 下，而不是某个包内
 - 因此当前推荐使用 `roslaunch $HOME/thesis_ws/launch/scenarios/task1_mapping_session.launch`
 - 后续若要改成 `roslaunch <package> <file.launch>`，再把入口收口到包内
+
+Task2 当前的 smoke test 启动方式：
+
+- 当前推荐使用 `$HOME/thesis_ws/scripts/run_task2_active_map.sh`
+- 该脚本会读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，再调用正式的 Task2 场景 launch
+- 若需要手工调参或切图，也可以直接调用 `roslaunch $HOME/thesis_ws/launch/scenarios/task2_single_goal_nav.launch map_id:=... map_file:=...`

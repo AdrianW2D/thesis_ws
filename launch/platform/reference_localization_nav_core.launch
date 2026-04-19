@@ -1,20 +1,43 @@
 <launch>
-  <arg name="map_id" default="" />
+  <arg name="map_id" default="task1_lab_v01" />
+  <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
+  <arg name="amcl_param_file" default="$(find scout_description)/param/amcl_params.yaml" />
+  <arg name="costmap_common_param_file" default="$(find scout_description)/param/4wd/costmap_common_params.yaml" />
+  <arg name="local_costmap_param_file" default="$(find scout_description)/param/4wd/local_costmap_params.yaml" />
+  <arg name="global_costmap_param_file" default="$(find scout_description)/param/4wd/global_costmap_params.yaml" />
+  <arg name="base_local_planner_param_file" default="$(find scout_description)/param/4wd/base_local_planner_params.yaml" />
+  <arg name="move_base_param_file" default="$(find scout_description)/param/4wd/move_base_params.yaml" />
+  <arg name="initial_pose_x" default="0.0" />
+  <arg name="initial_pose_y" default="0.0" />
+  <arg name="initial_pose_a" default="0.0" />
 
   <!--
-    Placeholder for thesis-local composition of:
-    - map_server
-    - amcl / localization
-    - move_base / navigation
+    Task 2 localization + single-goal navigation core.
 
-    We intentionally do not directly wrap scout_bringup/navigation_4wd.launch
-    as the thesis formal entry because that upstream file mixes:
-    - fixed map path
-    - RViz startup
-    - move_base params
-    - AMCL params
-    - base bringup
-
-    Thesis_ws should later control those concerns separately.
+    Thesis owns map selection, scene composition, RViz entry, and result
+    conventions. The platform workspace still provides the upstream parameter
+    files and underlying navigation stack packages.
   -->
+  <param name="thesis/task2/active_map_id" value="$(arg map_id)" />
+  <param name="thesis/task2/active_map_file" value="$(arg map_file)" />
+
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" output="screen">
+    <param name="frame_id" value="map" />
+  </node>
+
+  <node pkg="amcl" type="amcl" name="amcl" output="screen">
+    <rosparam file="$(arg amcl_param_file)" command="load" />
+    <param name="initial_pose_x" value="$(arg initial_pose_x)" />
+    <param name="initial_pose_y" value="$(arg initial_pose_y)" />
+    <param name="initial_pose_a" value="$(arg initial_pose_a)" />
+  </node>
+
+  <node pkg="move_base" type="move_base" name="move_base" output="screen" respawn="false">
+    <rosparam file="$(arg costmap_common_param_file)" command="load" ns="global_costmap" />
+    <rosparam file="$(arg costmap_common_param_file)" command="load" ns="local_costmap" />
+    <rosparam file="$(arg local_costmap_param_file)" command="load" />
+    <rosparam file="$(arg global_costmap_param_file)" command="load" />
+    <rosparam file="$(arg base_local_planner_param_file)" command="load" />
+    <rosparam file="$(arg move_base_param_file)" command="load" />
+  </node>
 </launch>

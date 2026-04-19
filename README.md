@@ -97,6 +97,32 @@ Task1 的工控机运行口径如下：
 
 - `docs/task1_mapping.md`
 
+## Task2 正式入口
+
+Task2 当前已将“定位 + 单点导航”收口为 thesis 的正式场景入口：
+
+- 场景入口：`launch/scenarios/task2_single_goal_nav.launch`
+- 定位导航核心：`launch/platform/reference_localization_nav_core.launch`
+- 地图索引：`config/maps/map_refs.yaml`
+- 活动地图启动脚本：`scripts/run_task2_active_map.sh`
+- RViz 入口：`launch/tools/rviz_session.launch`
+- 结果归档目录：`results/navigation/`
+
+Task2 中的职责划分如下：
+
+- `catkin_ws`：提供底层平台能力、AMCL 参数文件、move_base 参数文件与导航栈依赖
+- `thesis_ws`：组织活动地图选择、定位导航场景、观察入口与结果归档规范
+
+Task2 当前的地图引用方式如下：
+
+- `config/maps/map_refs.yaml` 是 thesis 层地图索引
+- `active_map_id` 当前设为 `task1_lab_v01`
+- `scripts/run_task2_active_map.sh` 会根据 `active_map_id` 解析当前地图，并调用正式的 Task2 场景 launch
+
+更完整的 Task2 说明见：
+
+- `docs/task2_single_goal_nav.md`
+
 ## 本地平级视图与运行时视图
 
 - 本地平级视图：`final/catkin_ws` 与 `final/thesis_ws` 平级存在，便于在本地复用平台能力、核对接口和组织 thesis 侧入口。

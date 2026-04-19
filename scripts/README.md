@@ -18,3 +18,4 @@
 当前已提供：
 
 - `save_task1_map.sh`：将地图保存到 `maps/generated/`，并在 `results/mapping/` 中生成最小结果说明
+- `run_task2_active_map.sh`：读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，解析当前地图后启动 Task2 正式场景入口

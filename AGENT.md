@@ -68,6 +68,17 @@ final/
 - 在未把场景 launch 收口到包内之前，不把 `roslaunch <package> <file.launch>` 当作当前 Task1 的默认启动建议
 - Task1 当前只收口场景入口与结果规范，不做建图效果调优
 
+## Task2 约束
+
+- Task2 的正式入口为 `launch/scenarios/task2_single_goal_nav.launch`
+- Task2 的定位与导航核心应由 thesis 的 platform 层显式组织，而不是直接把官方 `navigation_4wd.launch` 视为最终入口
+- Task2 的地图选择应面向 `config/maps/map_refs.yaml`，当前活动地图由 `active_map_id` 指向
+- Task2 当前默认导航地图为 `task1_lab_v01`
+- Task2 的 smoke test 推荐通过 `$HOME/thesis_ws/scripts/run_task2_active_map.sh` 启动
+- Task2 的 RViz 观察入口应由 thesis 的 tools 层提供
+- Task2 的结果说明与截图应归档到 `$HOME/thesis_ws/results/navigation/`
+- Task2 当前只收口场景入口、地图引用、观察入口与结果规范，不做 AMCL / DWA / move_base 深调
+
 ## 目录落位规则
 
 - `launch/`：只放 thesis 入口和 wrapper，不放 catkin_ws 源码副本，也不写死对平台目录内部的运行依赖。
