@@ -1,0 +1,19 @@
+<launch>
+  <arg name="map_id" default="" />
+  <arg name="start_rviz" default="false" />
+  <arg name="record_bag" default="false" />
+
+  <include file="$(dirname)/../platform/reference_base_bridge.launch" />
+  <include file="$(dirname)/../platform/reference_sensing_bridge.launch" />
+  <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
+    <arg name="map_id" value="$(arg map_id)" />
+  </include>
+
+  <!--
+    Phase 1 orchestration shell for task 2.
+    Later this file should own:
+    - map selection from config/maps/map_refs.yaml
+    - thesis-local localization and navigation overlays
+    - goal dispatch and run summary outputs
+  -->
+</launch>

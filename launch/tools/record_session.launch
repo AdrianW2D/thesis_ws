@@ -1,0 +1,12 @@
+<launch>
+  <arg name="session_name" default="unnamed_session" />
+  <arg name="output_prefix" default="$(env HOME)/thesis_ws/bags/$(arg session_name)" />
+  <arg name="topics" default="/tf /tf_static" />
+
+  <!--
+    Minimal thesis-owned rosbag entry.
+    Scenarios decide whether to call it and which topics/output path to use.
+  -->
+  <node pkg="rosbag" type="record" name="thesis_rosbag_record" output="screen"
+        args="-O $(arg output_prefix) $(arg topics)" />
+</launch>

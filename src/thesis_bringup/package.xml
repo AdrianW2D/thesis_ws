@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>thesis_bringup</name>
+  <version>0.1.0</version>
+  <description>Thesis-level bringup wrappers and scenario entry points.</description>
+
+  <maintainer email="wangchong@example.com">Wang Chong</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export/>
+</package>

@@ -1,0 +1,8 @@
+<launch>
+  <!--
+    Phase 1 bridge only.
+    Laser / scan / static TF chain remains owned by the platform workspace on
+    the deployed machine. The local reference copy is analysis-only.
+  -->
+  <include file="$(find scout_bringup)/launch/open_rslidar.launch" />
+</launch>

@@ -1,0 +1,30 @@
+# NOTE:
+# - This file keeps a local repository inventory view for analysis.
+# - Fields such as path_repo_relative describe local bookkeeping inside the
+#   current repository and must not be treated as runtime deployment paths.
+# - Runtime map resolution should later target thesis-owned map assets or
+#   package/environment-based lookup on the deployed machine.
+
+active_map_id: ""
+
+maps:
+  reference_map:
+    source_workspace: catkin_ws
+    editable: false
+    kind: upstream_baseline
+    path_repo_relative: catkin_ws/src/scout_base/scout_description/maps/map.yaml
+    note: Local platform-baseline record of an upstream map. Thesis uses it by reference, not by internal path coupling.
+
+  reference_map_test1:
+    source_workspace: catkin_ws
+    editable: false
+    kind: upstream_baseline
+    path_repo_relative: catkin_ws/src/scout_base/scout_description/maps/map_test1.yaml
+    note: Local platform-baseline record of a historical upstream map. Thesis uses it by reference, not by internal path coupling.
+
+  thesis_generated_placeholder:
+    source_workspace: thesis_ws
+    editable: true
+    kind: thesis_generated
+    path_repo_relative: thesis_ws/maps/generated/
+    note: Thesis-owned map output location. Runtime should prefer thesis-managed map assets.

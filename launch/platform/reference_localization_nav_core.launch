@@ -1,0 +1,20 @@
+<launch>
+  <arg name="map_id" default="" />
+
+  <!--
+    Placeholder for thesis-local composition of:
+    - map_server
+    - amcl / localization
+    - move_base / navigation
+
+    We intentionally do not directly wrap scout_bringup/navigation_4wd.launch
+    as the thesis formal entry because that upstream file mixes:
+    - fixed map path
+    - RViz startup
+    - move_base params
+    - AMCL params
+    - base bringup
+
+    Thesis_ws should later control those concerns separately.
+  -->
+</launch>

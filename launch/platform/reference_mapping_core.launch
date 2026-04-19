@@ -1,0 +1,15 @@
+<launch>
+  <arg name="param_file" default="$(dirname)/../../config/overlays/mapping/gmapping_task1.yaml" />
+  <arg name="scan_topic" default="/scan" />
+
+  <!--
+    Task 1 mapping core.
+
+    RViz, rosbag, map save, and result conventions remain owned by the thesis
+    scenario/tools layers instead of being folded into one upstream demo launch.
+  -->
+  <node pkg="gmapping" type="slam_gmapping" name="thesis_task1_gmapping" output="screen">
+    <remap from="scan" to="$(arg scan_topic)" />
+    <rosparam command="load" file="$(arg param_file)" />
+  </node>
+</launch>

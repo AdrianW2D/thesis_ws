@@ -1,0 +1,64 @@
+task_set_id: patrol_seed_v01
+task_set_name: patrol_seed_demo
+map_id: ""
+frame_id: map
+description: >
+  Phase 1 template only. Replace coordinates and map_id after real map capture.
+
+points:
+  - point_id: P01
+    point_name: start_zone
+    sequence: 1
+    pose:
+      x: 0.0
+      y: 0.0
+      yaw: 0.0
+    tolerance:
+      xy: 0.30
+      yaw_deg: 15
+    task_type: checkpoint
+    stay_time_sec: 2.0
+    expected_action: arrive_only
+    enabled: true
+    tags:
+      - start
+      - safe_zone
+    note: Replace with the actual start position in the saved map.
+
+  - point_id: P02
+    point_name: corridor_mid
+    sequence: 2
+    pose:
+      x: 1.5
+      y: 0.0
+      yaw: 0.0
+    tolerance:
+      xy: 0.30
+      yaw_deg: 15
+    task_type: inspect
+    stay_time_sec: 3.0
+    expected_action: pause_and_record
+    enabled: true
+    tags:
+      - corridor
+      - inspection
+    note: Placeholder waypoint for a future corridor inspection point.
+
+  - point_id: P03
+    point_name: return_zone
+    sequence: 3
+    pose:
+      x: 0.0
+      y: 0.0
+      yaw: 3.14
+    tolerance:
+      xy: 0.30
+      yaw_deg: 20
+    task_type: transit
+    stay_time_sec: 1.0
+    expected_action: return_only
+    enabled: true
+    tags:
+      - finish
+      - return
+    note: Placeholder return point for the end of the patrol route.

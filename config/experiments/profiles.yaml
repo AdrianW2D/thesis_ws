@@ -1,0 +1,48 @@
+# NOTE:
+# - Fields ending in _repo_relative are local repository index fields.
+# - They document where assets live in the current repository view, but they
+#   are not intended to become runtime path assumptions on the deployed robot.
+# - Runtime orchestration should resolve launch/config/task assets from the
+#   deployed thesis_ws and the system catkin_ws environment.
+
+profiles:
+  mapping_demo:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task1_mapping_session.launch
+    bag_output_repo_relative: thesis_ws/bags/mapping/
+    result_output_repo_relative: thesis_ws/results/mapping/
+    map_output_repo_relative: thesis_ws/maps/generated/
+    map_save_script_repo_relative: thesis_ws/scripts/save_task1_map.sh
+    record_topics:
+      - /scan
+      - /tf
+      - /tf_static
+      - /odom
+      - /map
+    note: Local repository profile for task 1 bookkeeping; runtime should use the deployed thesis_ws layout.
+
+  single_goal_nav:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task2_single_goal_nav.launch
+    map_ref_config_repo_relative: thesis_ws/config/maps/map_refs.yaml
+    bag_output_repo_relative: thesis_ws/bags/navigation/
+    result_output_repo_relative: thesis_ws/results/navigation/
+    record_topics:
+      - /map
+      - /odom
+      - /scan
+      - /move_base_simple/goal
+      - /move_base/status
+      - /cmd_vel
+    note: Local repository profile for task 2 bookkeeping; runtime should use the deployed thesis_ws layout.
+
+  patrol_stub:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task3_patrol_stub.launch
+    task_file_repo_relative: thesis_ws/tasks/waypoint_sets/patrol_seed.yaml
+    bag_output_repo_relative: thesis_ws/bags/patrol/
+    result_output_repo_relative: thesis_ws/results/patrol/
+    record_topics:
+      - /map
+      - /odom
+      - /scan
+      - /move_base/status
+      - /cmd_vel
+    note: Local repository profile for task 3 bookkeeping; runtime should use the deployed thesis_ws layout.

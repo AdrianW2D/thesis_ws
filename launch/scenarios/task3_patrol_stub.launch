@@ -1,0 +1,22 @@
+<launch>
+  <arg name="map_id" default="" />
+  <arg name="task_file" default="$(dirname)/../../tasks/waypoint_sets/patrol_seed.yaml" />
+  <arg name="start_rviz" default="false" />
+  <arg name="record_bag" default="false" />
+
+  <include file="$(dirname)/../platform/reference_base_bridge.launch" />
+  <include file="$(dirname)/../platform/reference_sensing_bridge.launch" />
+  <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
+    <arg name="map_id" value="$(arg map_id)" />
+  </include>
+
+  <!--
+    Phase 1 orchestration shell for task 3.
+    Current responsibility is only to reserve:
+    - waypoint file input
+    - patrol run entry naming
+    - result sink ownership
+
+    No multi-point executor is implemented in this phase.
+  -->
+</launch>

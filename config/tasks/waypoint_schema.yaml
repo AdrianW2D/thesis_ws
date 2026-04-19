@@ -1,0 +1,42 @@
+schema_version: 1
+
+naming_rules:
+  task_file: "patrol_<scene>_vNN.yaml"
+  point_id: "P01, P02, P03, ..."
+  point_name: "snake_case"
+  default_frame_id: "map"
+
+task_file_required_fields:
+  - task_set_id
+  - task_set_name
+  - map_id
+  - frame_id
+  - points
+
+point_required_fields:
+  - point_id
+  - point_name
+  - pose.x
+  - pose.y
+  - pose.yaw
+  - task_type
+  - enabled
+
+point_optional_fields:
+  - sequence
+  - tolerance.xy
+  - tolerance.yaw_deg
+  - stay_time_sec
+  - expected_action
+  - tags
+  - note
+
+task_types:
+  - transit
+  - inspect
+  - checkpoint
+  - wait
+
+usage_note: >
+  Phase 1 only defines the data contract. A full multi-point executor is
+  intentionally out of scope at this stage.

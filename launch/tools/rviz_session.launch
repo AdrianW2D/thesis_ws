@@ -1,0 +1,11 @@
+<launch>
+  <arg name="profile" default="task1_mapping" />
+  <arg name="config_file" default="$(find scout_description)/rviz/mapping.rviz" />
+
+  <!--
+    Thesis-owned RViz entry.
+    The launch ownership is in thesis_ws even when the config file is still
+    inherited from the platform workspace.
+  -->
+  <node name="thesis_rviz" pkg="rviz" type="rviz" args="-d $(arg config_file)" output="screen" />
+</launch>
