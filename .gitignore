@@ -1,0 +1,44 @@
+# macOS / editor noise
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Catkin / workspace build outputs
+/build/
+/build_isolated/
+/devel/
+/devel_isolated/
+/install/
+/log/
+/.catkin_tools/
+
+# Runtime rosbag outputs
+/bags/**
+!/bags/
+!/bags/README.md
+
+# Runtime logs and notes
+/logs/**
+!/logs/
+!/logs/README.md
+
+# Generated maps kept on the robot locally
+/maps/generated/**
+!/maps/generated/
+!/maps/generated/README.md
+
+# Experiment results kept locally by default
+/results/**
+!/results/
+!/results/README.md
+!/results/mapping/
+!/results/mapping/README.md
+!/results/navigation/
+!/results/navigation/README.md
+!/results/patrol/
+!/results/patrol/README.md

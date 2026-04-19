@@ -47,6 +47,15 @@ final/
 - launch 应依赖 ROS 包解析和已 source 的环境，不依赖任何 `reference` 相对路径。
 - map/config/task 的运行时组织以 thesis_ws 自己目录或工控机上的系统 `catkin_ws` 包解析为准。
 
+## Git 与运行产物边界
+
+- thesis_ws 作为工控机上的 Git 持续更新工作空间，默认只把代码、配置、脚本、文档和 README 结构说明纳入版本管理。
+- 地图、结果、bags、logs，以及 `build/`、`devel/`、`install/` 等生成物默认仅保留在本地，不作为日常提交对象。
+- 根目录 `.gitignore` 必须持续维护这条边界；后续新增运行产物目录时，也应同步补充忽略规则。
+- 各生成物目录中的 README 文件用于保留结构说明，不应因为目录被忽略而删除。
+- 若未来误把运行产物加入 Git，应优先使用 `git rm --cached <path>` 取消跟踪并保留本地文件，再由 `.gitignore` 接管。
+- 工控机日常更新流程默认是 `git pull`、重新编译、重新运行，不应把 `git clean -fdx` 之类破坏性清理命令混入常规流程。
+
 ## Task1 约束
 
 - Task1 的正式入口为 `launch/scenarios/task1_mapping_session.launch`

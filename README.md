@@ -111,6 +111,31 @@ Task1 的工控机运行口径如下：
 - 本地 `catkin_ws` 提供平级平台能力与结构参考，但不提供给 thesis_ws 的目录内部耦合前提。
 - 后续联调与部署默认面向工控机上的 `~/catkin_ws` 与 `~/thesis_ws` 平级结构。
 
+## Git 更新与运行产物隔离
+
+`thesis_ws` 后续会作为工控机上通过 Git 持续更新的主工作空间使用，因此需要明确区分两类内容：
+
+- 受 Git 管理的内容：代码、launch、config、docs、scripts、tasks，以及各目录中的 README 结构说明文件
+- 默认仅本地保留的内容：地图、结果、bags、logs，以及 `build/`、`devel/`、`install/` 等运行和编译生成物
+
+当前根目录 `.gitignore` 已按这个原则配置，目标是：
+
+- `git pull` 只更新 thesis_ws 的代码与配置
+- `maps/generated/`、`results/`、`bags/`、`logs/` 中的本地实验资产默认不纳入版本控制
+- 目录中的 README 文件继续保留，用于说明结构用途和建议落位
+
+工控机后续推荐更新流程：
+
+1. 进入 `$HOME/thesis_ws`
+2. 执行 `git pull`
+3. 重新编译 thesis_ws
+4. 再运行实验
+
+只要运行产物未被 Git 跟踪且被 `.gitignore` 排除，普通 `git pull` 不应主动影响这些本地文件。
+需要注意的是，`git clean -fdx` 这类显式清理命令仍会删除被忽略的本地生成物，因此不应把它当作日常更新步骤。
+
+若需长期保存关键实验结果，应另行归档，而不是默认提交回仓库。
+
 ## 第一轮完成标准
 
 满足以下条件即可视为“第一轮骨架构建完成”：
