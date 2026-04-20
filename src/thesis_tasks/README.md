@@ -1,11 +1,17 @@
 # thesis_tasks
 
-本包预留给 thesis 侧任务组织层。
+本包用于 thesis 侧任务组织层。
 
-第一轮阶段的边界：
+当前已具备的 A1 基础：
 
 - 定义 waypoint / patrol task 的数据组织方式
 - 约束任务点命名、字段、文件落位
-- 为后续多点巡检执行器预留扩展空间
+- 提供 `task_manager_node.py` 最小巡检执行器
+- 支持 waypoint 装载、ready gate、move_base 顺序执行、重试/跳过与最小 session 摘要
 
-当前阶段不实现完整巡检调度算法。
+当前阶段仍然不做：
+
+- 多节点拆分
+- 自定义 msg/srv
+- 复杂策略优化
+- 覆盖路径或区域规划

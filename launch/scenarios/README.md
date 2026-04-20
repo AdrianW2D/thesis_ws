@@ -12,7 +12,7 @@
 
 - `task1_mapping_session.launch`：Task1 正式场景入口，当前已收口为建图展示入口
 - `task2_single_goal_nav.launch`：Task2 正式场景入口，当前已收口为定位 + 单点导航入口
-- `task3_patrol_stub.launch`
+- `task3_patrol_stub.launch`：Task3 A1 最小多点巡检入口，当前已接入 thesis 侧 patrol manager
 
 Task1 当前的 smoke test 启动方式：
 
@@ -25,3 +25,9 @@ Task2 当前的 smoke test 启动方式：
 - 当前推荐使用 `$HOME/thesis_ws/scripts/run_task2_active_map.sh`
 - 该脚本会读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，再调用正式的 Task2 场景 launch
 - 若需要手工调参或切图，也可以直接调用 `roslaunch $HOME/thesis_ws/launch/scenarios/task2_single_goal_nav.launch map_id:=... map_file:=...`
+
+Task3 A1 当前的 smoke test 启动方式：
+
+- 当前推荐使用 `$HOME/thesis_ws/scripts/run_task3_active_map.sh`
+- 该脚本会读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，解析当前地图，并加载默认的 `tasks/waypoint_sets/patrol_smoke_v01.yaml`
+- 若需要切换任务文件，也可以通过环境变量 `THESIS_TASK3_TASK_FILE=...` 或直接调用 `roslaunch $HOME/thesis_ws/launch/scenarios/task3_patrol_stub.launch map_id:=... map_file:=... task_file:=...`

@@ -123,6 +123,32 @@ Task2 当前的地图引用方式如下：
 
 - `docs/task2_single_goal_nav.md`
 
+## Task3 A1 最小巡检入口
+
+Task3 当前已从纯占位状态推进到 A1 最小闭环实现阶段：
+
+- 场景入口：`launch/scenarios/task3_patrol_stub.launch`
+- 活动地图启动脚本：`scripts/run_task3_active_map.sh`
+- 任务文件目录：`tasks/waypoint_sets/`
+- 默认 smoke task：`tasks/waypoint_sets/patrol_smoke_v01.yaml`
+- 执行节点：`src/thesis_tasks/scripts/task_manager_node.py`
+- 结果归档目录：`results/patrol/`
+
+Task3 A1 当前具备的 thesis 侧能力：
+
+- 装载并校验 waypoint YAML
+- 等待 `/move_base` action server 与首条 `/amcl_pose`
+- 顺序发送 waypoint 到 `move_base`
+- 支持 `retry_limit`、`goal_timeout`、`skip_on_failure`
+- 在 `results/patrol/` 输出最小 session 摘要
+
+Task3 A1 当前仍然不做：
+
+- 自定义 msg/srv
+- 多节点拆分
+- 覆盖路径与策略优化
+- 复杂上位机或可视化交互
+
 ## 本地平级视图与运行时视图
 
 - 本地平级视图：`final/catkin_ws` 与 `final/thesis_ws` 平级存在，便于在本地复用平台能力、核对接口和组织 thesis 侧入口。

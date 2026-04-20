@@ -1,6 +1,8 @@
 <launch>
-  <arg name="map_id" default="" />
-  <arg name="task_file" default="$(dirname)/../../tasks/waypoint_sets/patrol_seed.yaml" />
+  <arg name="map_id" default="task1_lab_v01" />
+  <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
+  <arg name="task_file" default="$(dirname)/../../tasks/waypoint_sets/patrol_smoke_v01.yaml" />
+  <arg name="result_dir" default="$(env HOME)/thesis_ws/results/patrol" />
   <arg name="start_rviz" default="false" />
   <arg name="record_bag" default="false" />
 
@@ -8,15 +10,22 @@
   <include file="$(dirname)/../platform/reference_sensing_bridge.launch" />
   <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
     <arg name="map_id" value="$(arg map_id)" />
+    <arg name="map_file" value="$(arg map_file)" />
   </include>
 
   <!--
-    Phase 1 orchestration shell for task 3.
-    Current responsibility is only to reserve:
-    - waypoint file input
-    - patrol run entry naming
-    - result sink ownership
-
-    No multi-point executor is implemented in this phase.
+    A1 stage keeps the existing localization/navigation chain and adds the
+    thesis-side minimal patrol executor. Current responsibilities:
+    - load and validate enabled waypoints
+    - wait for /move_base and the first /amcl_pose
+    - execute a sequential waypoint queue through move_base
+    - apply retry_limit / goal_timeout / skip_on_failure
+    - write a minimal session summary under results/patrol
   -->
+
+  <node pkg="thesis_tasks" type="task_manager_node.py" name="task_manager_node" output="screen">
+    <rosparam command="load" file="$(dirname)/../../config/tasks/patrol_manager_params.yaml" />
+    <param name="task_file" value="$(arg task_file)" />
+    <param name="result_dir" value="$(arg result_dir)" />
+  </node>
 </launch>

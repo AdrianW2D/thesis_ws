@@ -1,0 +1,66 @@
+task_set_id: patrol_smoke_v01
+task_set_name: patrol_smoke_demo
+map_id: task1_lab_v01
+frame_id: map
+description: >
+  A1 smoke test task for the thesis task manager. Replace all point
+  coordinates with verified values from the real map before running on the
+  robot.
+
+points:
+  - point_id: P01
+    point_name: smoke_start
+    sequence: 1
+    pose:
+      x: 0.0
+      y: 0.0
+      yaw: 0.0
+    tolerance:
+      xy: 0.30
+      yaw_deg: 15
+    task_type: checkpoint
+    stay_time_sec: 1.0
+    expected_action: arrive_only
+    enabled: true
+    tags:
+      - smoke
+      - start
+    note: Example point only. Replace with a verified start pose before use.
+
+  - point_id: P02
+    point_name: smoke_mid
+    sequence: 2
+    pose:
+      x: 0.8
+      y: 0.0
+      yaw: 0.0
+    tolerance:
+      xy: 0.30
+      yaw_deg: 15
+    task_type: inspect
+    stay_time_sec: 1.0
+    expected_action: arrive_only
+    enabled: true
+    tags:
+      - smoke
+      - mid
+    note: Example midpoint only. Replace with a reachable pose on the real map.
+
+  - point_id: P03
+    point_name: smoke_return
+    sequence: 3
+    pose:
+      x: 0.0
+      y: 0.0
+      yaw: 3.14
+    tolerance:
+      xy: 0.30
+      yaw_deg: 20
+    task_type: transit
+    stay_time_sec: 1.0
+    expected_action: return_only
+    enabled: true
+    tags:
+      - smoke
+      - return
+    note: Example return point only. Replace with a verified return pose before use.
