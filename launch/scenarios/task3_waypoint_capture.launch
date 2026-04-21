@@ -1,0 +1,28 @@
+<launch>
+  <arg name="map_id" default="task1_lab_v01" />
+  <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
+  <arg name="start_rviz" default="true" />
+  <arg name="output_file" default="$(env HOME)/thesis_ws/tasks/waypoint_sets/patrol_capture.yaml" />
+  <arg name="default_task_type" default="checkpoint" />
+
+  <include file="$(dirname)/task2_single_goal_nav.launch">
+    <arg name="map_id" value="$(arg map_id)" />
+    <arg name="map_file" value="$(arg map_file)" />
+    <arg name="start_rviz" value="$(arg start_rviz)" />
+    <arg name="record_bag" value="false" />
+    <arg name="session_name" value="task3_waypoint_capture" />
+  </include>
+
+  <!--
+    Task3 waypoint capture mode:
+    - reuse the stable Task2 localization/navigation + RViz session
+    - capture each RViz 2D Nav Goal click into a Task3 waypoint YAML
+    - keep yaw from the clicked goal orientation instead of reconstructing it later
+  -->
+  <node pkg="thesis_tasks" type="waypoint_capture_node.py" name="waypoint_capture_node" output="screen">
+    <param name="output_file" value="$(arg output_file)" />
+    <param name="map_id" value="$(arg map_id)" />
+    <param name="frame_id" value="map" />
+    <param name="default_task_type" value="$(arg default_task_type)" />
+  </node>
+</launch>

@@ -13,6 +13,7 @@
 - `task1_mapping_session.launch`：Task1 正式场景入口，当前已收口为建图展示入口
 - `task2_single_goal_nav.launch`：Task2 正式场景入口，当前已收口为定位 + 单点导航入口
 - `task3_patrol_stub.launch`：Task3 A1 最小多点巡检入口，当前已接入 thesis 侧 patrol manager
+- `task3_waypoint_capture.launch`：Task3 waypoint 取点入口，复用 Task2 导航场景并自动记录 RViz 目标点
 
 Task1 当前的 smoke test 启动方式：
 
@@ -31,3 +32,9 @@ Task3 A1 当前的 smoke test 启动方式：
 - 当前推荐使用 `$HOME/thesis_ws/scripts/run_task3_active_map.sh`
 - 该脚本会读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，解析当前地图，并加载默认的 `tasks/waypoint_sets/patrol_smoke_v01.yaml`
 - 若需要切换任务文件，也可以通过环境变量 `THESIS_TASK3_TASK_FILE=...` 或直接调用 `roslaunch $HOME/thesis_ws/launch/scenarios/task3_patrol_stub.launch map_id:=... map_file:=... task_file:=...`
+
+Task3 waypoint 取点模式：
+
+- 当前推荐使用 `$HOME/thesis_ws/scripts/run_task3_waypoint_capture_active_map.sh`
+- 该脚本会复用当前活动地图启动 Task2 式导航场景，并自动订阅 `/move_base_simple/goal`
+- 每次在 RViz 中点击 `2D Nav Goal`，都会自动追加保存到一个 Task3 waypoint YAML 文件

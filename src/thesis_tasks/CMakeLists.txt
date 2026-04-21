@@ -16,5 +16,6 @@ catkin_package(
 
 catkin_install_python(PROGRAMS
   scripts/task_manager_node.py
+  scripts/waypoint_capture_node.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
