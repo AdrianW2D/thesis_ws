@@ -39,12 +39,17 @@ class WaypointCaptureNode(object):
         self.default_stay_time_sec = float(rospy.get_param("~default_stay_time_sec", 1.0))
         self.auto_write = bool(rospy.get_param("~auto_write", True))
         self.points = []
+        self.last_capture_signature = None
+        self.last_capture_time = 0.0
 
         self._load_existing_file()
         self._ensure_parent_dir()
 
         self.goal_sub = rospy.Subscriber(
             "/move_base_simple/goal", PoseStamped, self._goal_callback, queue_size=10
+        )
+        self.goal_temp_sub = rospy.Subscriber(
+            "/move_base_simple/goal_temp", PoseStamped, self._goal_callback, queue_size=10
         )
         rospy.on_shutdown(self._on_shutdown)
 
@@ -54,8 +59,8 @@ class WaypointCaptureNode(object):
         rospy.loginfo("  frame_id: %s", self.frame_id)
         rospy.loginfo("  existing_points: %d", len(self.points))
         rospy.loginfo(
-            "Click RViz 2D Nav Goal to capture waypoint poses. The YAML will be "
-            "updated after each click."
+            "Click RViz 2D Nav Goal to capture waypoint poses. Supported topics: "
+            "/move_base_simple/goal and /move_base_simple/goal_temp."
         )
 
     def _resolve_path(self, raw_path):
@@ -149,6 +154,27 @@ class WaypointCaptureNode(object):
             msg.pose.orientation.w,
         ]
         yaw = euler_from_quaternion(quaternion)[2]
+        signature = (
+            round(float(msg.pose.position.x), 4),
+            round(float(msg.pose.position.y), 4),
+            round(float(yaw), 4),
+        )
+        now = rospy.Time.now().to_sec()
+
+        if (
+            self.last_capture_signature == signature
+            and (now - self.last_capture_time) < 0.5
+        ):
+            rospy.loginfo(
+                "Ignored duplicate captured goal pose=(%.4f, %.4f, %.4f)",
+                signature[0],
+                signature[1],
+                signature[2],
+            )
+            return
+
+        self.last_capture_signature = signature
+        self.last_capture_time = now
 
         sequence = len(self.points) + 1
         point_id = "P{0:02d}".format(sequence)
@@ -172,13 +198,18 @@ class WaypointCaptureNode(object):
         if self.auto_write:
             self._write_file()
 
+        topic_name = "unknown_topic"
+        if hasattr(msg, "_connection_header") and isinstance(msg._connection_header, dict):
+            topic_name = msg._connection_header.get("topic", topic_name)
+
         rospy.loginfo(
-            "Captured %s seq=%d pose=(%.4f, %.4f, %.4f) -> %s",
+            "Captured %s seq=%d pose=(%.4f, %.4f, %.4f) from %s -> %s",
             point_id,
             sequence,
             point["pose"]["x"],
             point["pose"]["y"],
             point["pose"]["yaw"],
+            topic_name,
             self.output_file,
         )
 

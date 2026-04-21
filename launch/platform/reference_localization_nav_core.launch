@@ -1,6 +1,7 @@
 <launch>
   <arg name="map_id" default="task1_lab_v01" />
   <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
+  <arg name="start_move_base" default="true" />
   <arg name="amcl_param_file" default="$(find scout_description)/param/amcl_params.yaml" />
   <arg name="costmap_common_param_file" default="$(find scout_description)/param/4wd/costmap_common_params.yaml" />
   <arg name="local_costmap_param_file" default="$(find scout_description)/param/4wd/local_costmap_params.yaml" />
@@ -32,7 +33,7 @@
     <param name="initial_pose_a" value="$(arg initial_pose_a)" />
   </node>
 
-  <node pkg="move_base" type="move_base" name="move_base" output="screen" respawn="false">
+  <node if="$(arg start_move_base)" pkg="move_base" type="move_base" name="move_base" output="screen" respawn="false">
     <rosparam file="$(arg costmap_common_param_file)" command="load" ns="global_costmap" />
     <rosparam file="$(arg costmap_common_param_file)" command="load" ns="local_costmap" />
     <rosparam file="$(arg local_costmap_param_file)" command="load" />

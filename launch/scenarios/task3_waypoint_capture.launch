@@ -1,23 +1,32 @@
 <launch>
   <arg name="map_id" default="task1_lab_v01" />
   <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
+  <arg name="use_reference_sensing" default="true" />
+  <arg name="use_reference_base" default="true" />
   <arg name="start_rviz" default="true" />
   <arg name="output_file" default="$(env HOME)/thesis_ws/tasks/waypoint_sets/patrol_capture.yaml" />
   <arg name="default_task_type" default="checkpoint" />
+  <arg name="rviz_config" default="$(find scout_description)/rviz/rviz_navigation.rviz" />
 
-  <include file="$(dirname)/task2_single_goal_nav.launch">
+  <include if="$(arg use_reference_base)" file="$(dirname)/../platform/reference_base_bridge.launch" />
+  <include if="$(arg use_reference_sensing)" file="$(dirname)/../platform/reference_sensing_bridge.launch" />
+  <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
     <arg name="map_id" value="$(arg map_id)" />
     <arg name="map_file" value="$(arg map_file)" />
-    <arg name="start_rviz" value="$(arg start_rviz)" />
-    <arg name="record_bag" value="false" />
-    <arg name="session_name" value="task3_waypoint_capture" />
+    <arg name="start_move_base" value="false" />
+  </include>
+
+  <include if="$(arg start_rviz)" file="$(dirname)/../tools/rviz_session.launch">
+    <arg name="profile" value="task3_waypoint_capture" />
+    <arg name="config_file" value="$(arg rviz_config)" />
   </include>
 
   <!--
     Task3 waypoint capture mode:
-    - reuse the stable Task2 localization/navigation + RViz session
+    - reuse the Task2-style localization + RViz session
+    - do not start move_base, so clicks are capture-only and do not trigger navigation
     - capture each RViz 2D Nav Goal click into a Task3 waypoint YAML
-    - keep yaw from the clicked goal orientation instead of reconstructing it later
+    - accept both /move_base_simple/goal and /move_base_simple/goal_temp
   -->
   <node pkg="thesis_tasks" type="waypoint_capture_node.py" name="waypoint_capture_node" output="screen">
     <param name="output_file" value="$(arg output_file)" />
