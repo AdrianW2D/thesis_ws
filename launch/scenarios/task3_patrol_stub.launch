@@ -5,7 +5,8 @@
   <arg name="result_dir" default="$(env HOME)/thesis_ws/results/patrol" />
   <arg name="manager_param_file" default="$(dirname)/../../config/tasks/patrol_manager_params.yaml" />
   <arg name="session_label" default="patrol" />
-  <arg name="start_rviz" default="false" />
+  <arg name="start_rviz" default="true" />
+  <arg name="rviz_config" default="$(find scout_description)/rviz/rviz_navigation.rviz" />
   <arg name="record_bag" default="false" />
 
   <include file="$(dirname)/../platform/reference_base_bridge.launch" />
@@ -19,11 +20,16 @@
     A1 stage keeps the existing localization/navigation chain and adds the
     thesis-side minimal patrol executor. Current responsibilities:
     - load and validate enabled waypoints
-    - wait for /move_base and the first /amcl_pose
+    - wait for /move_base, manual /initialpose confirmation, and refreshed /amcl_pose
     - execute a sequential waypoint queue through move_base
     - apply retry_limit / goal_timeout / skip_on_failure
     - write a minimal session summary under results/patrol
   -->
+
+  <include if="$(arg start_rviz)" file="$(dirname)/../tools/rviz_session.launch">
+    <arg name="profile" value="task3_patrol" />
+    <arg name="config_file" value="$(arg rviz_config)" />
+  </include>
 
   <node pkg="thesis_tasks" type="task_manager_node.py" name="task_manager_node" output="screen">
     <rosparam command="load" file="$(arg manager_param_file)" />

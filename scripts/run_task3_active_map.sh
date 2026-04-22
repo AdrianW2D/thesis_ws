@@ -134,6 +134,7 @@ echo "Resolved map source: ${map_source}"
 echo "Using map file: ${map_file}"
 echo "Using task file: ${TASK_FILE}"
 echo "Using manager params: ${MANAGER_PARAM_FILE}"
+echo "Task3 will wait for manual /initialpose confirmation in RViz before dispatching waypoint goals."
 
 exec roslaunch "${TASK3_LAUNCH}" \
   map_id:="${active_map_id}" \

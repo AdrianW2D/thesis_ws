@@ -149,12 +149,14 @@ Task3 当前已从纯占位状态推进到 A1 最小闭环实现阶段：
 Task3 A1 当前具备的 thesis 侧能力：
 
 - 装载并校验 waypoint YAML
-- 等待 `/move_base` action server 与首条 `/amcl_pose`
+- 等待 `/move_base` action server、手工 `/initialpose` 确认与刷新后的 `/amcl_pose`
 - 顺序发送 waypoint 到 `move_base`
 - 支持 `retry_limit`、`goal_timeout`、`skip_on_failure`
 - 在 `results/patrol/` 输出最小 session 摘要
 - 支持第二条实验线的 `baseline/enhanced` 执行模式切换
 - enhanced 模式下支持两阶段执行、进度监测、卡滞恢复和 thesis 接受判定
+
+Task3 当前默认会启动 thesis 侧 RViz 入口，并要求先使用 `2D Pose Estimate` 完成定位校准，再开始自动 dispatch waypoint。
 
 Task3 A1 当前配套的第二条实验线入口：
 

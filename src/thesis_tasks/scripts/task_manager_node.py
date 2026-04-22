@@ -72,6 +72,15 @@ class TaskManager(object):
         self.goal_timeout = float(rospy.get_param("~goal_timeout", 60.0))
         self.skip_on_failure = _as_bool(rospy.get_param("~skip_on_failure", True))
         self.ready_timeout = float(rospy.get_param("~ready_timeout", 30.0))
+        self.require_initialpose = _as_bool(
+            rospy.get_param("~require_initialpose", False)
+        )
+        self.initialpose_timeout = float(
+            rospy.get_param("~initialpose_timeout", 120.0)
+        )
+        self.post_initialpose_amcl_timeout = float(
+            rospy.get_param("~post_initialpose_amcl_timeout", 5.0)
+        )
 
         self.execution_mode = str(rospy.get_param("~execution_mode", "enhanced")).strip().lower()
         if self.execution_mode not in ("baseline", "enhanced"):
@@ -110,6 +119,7 @@ class TaskManager(object):
         )
 
         self.session_started_at = datetime.datetime.now()
+        self.node_started_time = time.time()
         self.session_id = "{0}_{1}".format(
             self.session_label,
             self.session_started_at.strftime("%Y%m%d_%H%M%S"),
@@ -126,6 +136,9 @@ class TaskManager(object):
         self.current_index = -1
         self.current_goal = None
         self.latest_amcl_pose_msg = None
+        self.latest_amcl_pose_time = 0.0
+        self.latest_initialpose_msg = None
+        self.latest_initialpose_time = 0.0
         self.session_records = []
         self.mission_status = "INIT"
         self.abort_reason = ""
@@ -153,6 +166,12 @@ class TaskManager(object):
             self._amcl_pose_callback,
             queue_size=10,
         )
+        self.initialpose_subscriber = rospy.Subscriber(
+            "/initialpose",
+            PoseWithCovarianceStamped,
+            self._initialpose_callback,
+            queue_size=10,
+        )
 
         rospy.on_shutdown(self._on_shutdown)
 
@@ -173,6 +192,11 @@ class TaskManager(object):
 
     def _amcl_pose_callback(self, msg):
         self.latest_amcl_pose_msg = msg
+        self.latest_amcl_pose_time = time.time()
+
+    def _initialpose_callback(self, msg):
+        self.latest_initialpose_msg = msg
+        self.latest_initialpose_time = time.time()
 
     def _pose_from_amcl(self):
         if self.latest_amcl_pose_msg is None:
@@ -259,6 +283,8 @@ class TaskManager(object):
         rospy.loginfo("  goal_timeout: %.1f", self.goal_timeout)
         rospy.loginfo("  skip_on_failure: %s", self.skip_on_failure)
         rospy.loginfo("  ready_timeout: %.1f", self.ready_timeout)
+        rospy.loginfo("  require_initialpose: %s", self.require_initialpose)
+        rospy.loginfo("  initialpose_timeout: %.1f", self.initialpose_timeout)
         rospy.loginfo("  enable_two_stage_goal: %s", self.enable_two_stage_goal)
         rospy.loginfo("  enable_progress_monitor: %s", self.enable_progress_monitor)
         rospy.loginfo("  enable_thesis_acceptance: %s", self.enable_thesis_acceptance)
@@ -456,11 +482,63 @@ class TaskManager(object):
 
         current_pose = self._pose_from_amcl()
         rospy.loginfo(
-            "Ready gate passed. First /amcl_pose received at (%.3f, %.3f)",
+            "Received first /amcl_pose at (%.3f, %.3f)",
             current_pose["x"],
             current_pose["y"],
         )
-        return True
+
+        if not self.require_initialpose:
+            rospy.loginfo("Ready gate passed without /initialpose confirmation.")
+            return True
+
+        rospy.loginfo(
+            "Waiting for manual /initialpose confirmation (timeout: %.1fs). "
+            "Use RViz 2D Pose Estimate before patrol starts.",
+            self.initialpose_timeout,
+        )
+
+        initialpose_deadline = time.time() + self.initialpose_timeout
+        while not rospy.is_shutdown() and time.time() < initialpose_deadline:
+            if self.latest_initialpose_time >= self.node_started_time:
+                break
+            rospy.sleep(0.1)
+
+        if self.latest_initialpose_time < self.node_started_time:
+            rospy.logerr(
+                "Timed out waiting for /initialpose after %.1fs. Task3 will not "
+                "dispatch waypoint goals without manual localization confirmation.",
+                self.initialpose_timeout,
+            )
+            return False
+
+        confirmed_initialpose_time = self.latest_initialpose_time
+        initial_pose = self.latest_initialpose_msg.pose.pose
+        rospy.loginfo(
+            "Received /initialpose confirmation at (%.3f, %.3f). Waiting for "
+            "refreshed /amcl_pose.",
+            initial_pose.position.x,
+            initial_pose.position.y,
+        )
+
+        amcl_deadline = time.time() + self.post_initialpose_amcl_timeout
+        while not rospy.is_shutdown() and time.time() < amcl_deadline:
+            if self.latest_amcl_pose_time > confirmed_initialpose_time:
+                current_pose = self._pose_from_amcl()
+                rospy.loginfo(
+                    "Ready gate passed after /initialpose. Current /amcl_pose is "
+                    "(%.3f, %.3f).",
+                    current_pose["x"],
+                    current_pose["y"],
+                )
+                return True
+            rospy.sleep(0.1)
+
+        rospy.logerr(
+            "Received /initialpose but did not observe a refreshed /amcl_pose "
+            "within %.1fs.",
+            self.post_initialpose_amcl_timeout,
+        )
+        return False
 
     def select_target(self):
         self.state = "SELECT_TARGET"

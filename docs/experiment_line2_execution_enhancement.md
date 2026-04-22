@@ -9,6 +9,8 @@
 
 这条实验线不修改 `move_base` 内核，而是在 thesis_ws 内增加自己的任务级执行增强层。
 
+Task3 当前默认会启动 RViz，并在收到一次手工 `2D Pose Estimate` 之后才开始自动下发 waypoint。这样可以避免 AMCL 尚未校准时，任务执行器过早发送目标，出现“全局路径已规划但底盘不前进”的假启动现象。
+
 ## Thesis-owned assets
 
 - 执行节点：`src/thesis_tasks/scripts/task_manager_node.py`
