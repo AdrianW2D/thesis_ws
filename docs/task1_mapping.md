@@ -28,6 +28,11 @@ Task1 的正式场景入口为：
 - `tools/`：RViz 与最小 rosbag 入口
 - `scenarios/`：Task1 的场景编排与参数选择
 
+第一条实验线已在 Task1 中预留了扫描增强前端接入位：
+
+- 关闭增强时，建图核心直接消费 `/scan`
+- 开启增强时，Task1 会先启动 `launch/platform/thesis_scan_frontend.launch`，再让 gmapping 消费 `/scan_thesis`
+
 ## 三层关系
 
 ### platform 层
@@ -37,12 +42,14 @@ Task1 当前调用：
 - `launch/platform/reference_sensing_bridge.launch`
 - `launch/platform/reference_base_bridge.launch`（按需开启）
 - `launch/platform/reference_mapping_core.launch`
+- `launch/platform/thesis_scan_frontend.launch`（第一条实验线中按需开启）
 
 其中：
 
 - `reference_sensing_bridge.launch`：接入激光/scan/TF 等基础链
 - `reference_base_bridge.launch`：按需接入底盘
 - `reference_mapping_core.launch`：只负责 gmapping 节点，不负责 RViz 和结果归档
+- `thesis_scan_frontend.launch`：thesis 自己的扫描增强前端，用于 baseline/enhanced 对比
 
 ### tools 层
 
@@ -116,6 +123,14 @@ source /opt/ros/melodic/setup.bash
 source "$HOME/catkin_ws/devel/setup.bash"
 source "$HOME/thesis_ws/devel/setup.bash"
 roslaunch "$HOME/thesis_ws/launch/scenarios/task1_mapping_session.launch"
+```
+
+第一条实验线建议使用：
+
+```bash
+"$HOME/thesis_ws/scripts/init_line1_scan_frontend_record.sh" exp_line1_lab_v01
+"$HOME/thesis_ws/scripts/run_task1_scan_frontend_experiment.sh" baseline exp_line1_task1_baseline
+"$HOME/thesis_ws/scripts/run_task1_scan_frontend_experiment.sh" enhanced exp_line1_task1_enhanced
 ```
 
 地图保存建议：

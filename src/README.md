@@ -5,6 +5,7 @@
 当前建议的最小模块如下：
 
 - `thesis_bringup`：系统启动封装层，负责 thesis 正式入口和 reference 接入封装。
+- `thesis_algorithms`：算法增强层，负责 thesis 自己拥有的感知前端或导航增强节点。
 - `thesis_tasks`：任务点配置层，负责 waypoint 数据约束与后续巡检任务装载。
 - `thesis_recording`：实验记录层，负责 bag、日志、结果摘要与简单评测沉淀。
 

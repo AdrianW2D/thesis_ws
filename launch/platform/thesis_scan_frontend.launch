@@ -1,0 +1,18 @@
+<launch>
+  <arg name="input_scan_topic" default="/scan" />
+  <arg name="output_scan_topic" default="/scan_thesis" />
+  <arg name="param_file" default="$(dirname)/../../config/overlays/sensing/scan_enhancer_enhanced.yaml" />
+
+  <!--
+    Thesis-owned scan enhancement frontend.
+
+    This wrapper does not modify any upstream sensing launch. It consumes the
+    platform-provided scan topic and republishes a thesis-managed enhanced scan
+    topic for baseline/enhanced experiments.
+  -->
+  <node pkg="thesis_algorithms" type="scan_enhancer_node.py" name="thesis_scan_enhancer" output="screen">
+    <rosparam command="load" file="$(arg param_file)" />
+    <param name="input_scan_topic" value="$(arg input_scan_topic)" />
+    <param name="output_scan_topic" value="$(arg output_scan_topic)" />
+  </node>
+</launch>

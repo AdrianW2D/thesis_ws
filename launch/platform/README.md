@@ -21,6 +21,7 @@
 
 - `reference_base_bridge.launch`：底盘接入封装，Task1 中按需调用。
 - `reference_sensing_bridge.launch`：激光、scan、静态 TF 等感知链接入封装。
+- `thesis_scan_frontend.launch`：thesis 自己的扫描增强前端，消费平台提供的 `/scan`，输出 thesis 管理的增强扫描话题。
 - `reference_mapping_core.launch`：Task1 的建图核心入口，只负责 gmapping 节点，不负责 RViz/记录/结果目录。
 - `reference_localization_nav_core.launch`：Task2 的定位与导航核心入口，负责 `map_server + amcl + move_base`，但不负责 RViz、结果目录或地图索引解析脚本。
 
@@ -34,6 +35,7 @@ Task2 当前实际使用：
 
 - `reference_base_bridge.launch`
 - `reference_sensing_bridge.launch`
+- `thesis_scan_frontend.launch`（第一条实验线中按需开启）
 - `reference_localization_nav_core.launch`
 
 Task3 当前仍保留占位：

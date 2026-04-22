@@ -62,6 +62,7 @@ final/
 ## thesis_ws 的职责分解
 
 - 系统启动封装：通过 wrapper launch 接入平台能力
+- 算法增强层：通过 thesis 自己的节点接入感知前端或任务执行增强逻辑
 - 实验流程组织：按 task1 / task2 / task3 组织入口
 - 任务点组织：用 waypoint 文件表达巡检点和任务语义
 - 记录与结果沉淀：统一 bag、log、result、map 输出位置
@@ -88,6 +89,7 @@ Task1 是 thesis_ws 中第一条正式收口的实验链，目标不是调优建
 
 - `scenarios/task1_mapping_session.launch`：正式场景入口
 - `platform/reference_sensing_bridge.launch`：平台感知接入
+- `platform/thesis_scan_frontend.launch`：第一条实验线的扫描增强前端
 - `platform/reference_mapping_core.launch`：建图核心
 - `tools/rviz_session.launch`：观察入口
 - `tools/record_session.launch`：最小记录入口
@@ -106,6 +108,7 @@ Task2 是 thesis_ws 中第二条正式收口的实验链，目标不是优化导
 当前 Task2 的组织方式是：
 
 - `scenarios/task2_single_goal_nav.launch`：正式场景入口
+- `platform/thesis_scan_frontend.launch`：第一条实验线中按需启用的扫描增强前端
 - `platform/reference_localization_nav_core.launch`：`map_server + amcl + move_base`
 - `tools/rviz_session.launch`：观察入口
 - `tools/record_session.launch`：最小记录入口

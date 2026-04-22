@@ -51,3 +51,83 @@ profiles:
       - /move_base/status
       - /cmd_vel
     note: Local repository profile for task 3 bookkeeping; runtime should use the deployed thesis_ws layout.
+
+  line1_scan_frontend_mapping_baseline:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task1_mapping_session.launch
+    launcher_script_repo_relative: thesis_ws/scripts/run_task1_scan_frontend_experiment.sh
+    scan_variant: baseline
+    use_scan_enhancer: false
+    scan_output_topic: /scan
+    scan_param_file_repo_relative: thesis_ws/config/overlays/sensing/scan_enhancer_baseline.yaml
+    bag_output_repo_relative: thesis_ws/bags/mapping/
+    result_output_repo_relative: thesis_ws/results/mapping/
+    record_topics:
+      - /scan
+      - /scan_thesis
+      - /tf
+      - /tf_static
+      - /odom
+      - /map
+    note: Baseline profile for experiment line 1. Mapping consumes raw scan directly.
+
+  line1_scan_frontend_mapping_enhanced:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task1_mapping_session.launch
+    launcher_script_repo_relative: thesis_ws/scripts/run_task1_scan_frontend_experiment.sh
+    scan_variant: enhanced
+    use_scan_enhancer: true
+    scan_output_topic: /scan_thesis
+    scan_param_file_repo_relative: thesis_ws/config/overlays/sensing/scan_enhancer_enhanced.yaml
+    bag_output_repo_relative: thesis_ws/bags/mapping/
+    result_output_repo_relative: thesis_ws/results/mapping/
+    record_topics:
+      - /scan
+      - /scan_thesis
+      - /tf
+      - /tf_static
+      - /odom
+      - /map
+    note: Enhanced profile for experiment line 1. Mapping consumes thesis-enhanced scan topic.
+
+  line1_scan_frontend_task2_baseline:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task2_single_goal_nav.launch
+    launcher_script_repo_relative: thesis_ws/scripts/run_task2_scan_frontend_experiment.sh
+    map_ref_config_repo_relative: thesis_ws/config/maps/map_refs.yaml
+    scan_variant: baseline
+    use_scan_enhancer: false
+    scan_output_topic: /scan
+    scan_param_file_repo_relative: thesis_ws/config/overlays/sensing/scan_enhancer_baseline.yaml
+    bag_output_repo_relative: thesis_ws/bags/navigation/
+    result_output_repo_relative: thesis_ws/results/navigation/
+    record_topics:
+      - /map
+      - /odom
+      - /scan
+      - /scan_thesis
+      - /amcl_pose
+      - /move_base/status
+      - /move_base/GlobalPlanner/plan
+      - /move_base/DWAPlannerROS/local_plan
+      - /cmd_vel
+    note: Baseline navigation validation profile for experiment line 1.
+
+  line1_scan_frontend_task2_enhanced:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task2_single_goal_nav.launch
+    launcher_script_repo_relative: thesis_ws/scripts/run_task2_scan_frontend_experiment.sh
+    map_ref_config_repo_relative: thesis_ws/config/maps/map_refs.yaml
+    scan_variant: enhanced
+    use_scan_enhancer: true
+    scan_output_topic: /scan_thesis
+    scan_param_file_repo_relative: thesis_ws/config/overlays/sensing/scan_enhancer_enhanced.yaml
+    bag_output_repo_relative: thesis_ws/bags/navigation/
+    result_output_repo_relative: thesis_ws/results/navigation/
+    record_topics:
+      - /map
+      - /odom
+      - /scan
+      - /scan_thesis
+      - /amcl_pose
+      - /move_base/status
+      - /move_base/GlobalPlanner/plan
+      - /move_base/DWAPlannerROS/local_plan
+      - /cmd_vel
+    note: Enhanced navigation validation profile for experiment line 1.

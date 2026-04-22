@@ -5,6 +5,7 @@
 建议原则：
 
 - mapping 相关覆盖放到 `mapping/`
+- sensing 相关覆盖放到 `sensing/`
 - localization 相关覆盖放到 `localization/`
 - navigation 相关覆盖放到 `navigation/`
 

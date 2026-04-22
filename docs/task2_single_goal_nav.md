@@ -32,6 +32,10 @@ Task2 的正式场景入口为：
 
 - `$HOME/thesis_ws/scripts/run_task2_active_map.sh`
 
+第一条实验线在 Task2 中额外提供：
+
+- `$HOME/thesis_ws/scripts/run_task2_scan_frontend_experiment.sh`
+
 这个脚本会从 `config/maps/map_refs.yaml` 读取 `active_map_id`，解析当前活动地图，再调用正式的 Task2 场景 launch。
 
 ## 三层关系
@@ -43,12 +47,14 @@ Task2 当前调用：
 - `launch/platform/reference_base_bridge.launch`
 - `launch/platform/reference_sensing_bridge.launch`
 - `launch/platform/reference_localization_nav_core.launch`
+- `launch/platform/thesis_scan_frontend.launch`（第一条实验线中按需开启）
 
 其中：
 
 - `reference_base_bridge.launch`：接入底盘基础链
 - `reference_sensing_bridge.launch`：接入激光、scan、TF 等基础链
 - `reference_localization_nav_core.launch`：只负责 `map_server + amcl + move_base`
+- `thesis_scan_frontend.launch`：thesis 的扫描增强前端。开启时，AMCL 与 costmap 改为消费 `/scan_thesis`
 
 ### tools 层
 
@@ -126,6 +132,13 @@ source /opt/ros/melodic/setup.bash
 source "$HOME/catkin_ws/devel/setup.bash"
 source "$HOME/thesis_ws/devel/setup.bash"
 "$HOME/thesis_ws/scripts/run_task2_active_map.sh"
+```
+
+第一条实验线建议使用：
+
+```bash
+"$HOME/thesis_ws/scripts/run_task2_scan_frontend_experiment.sh" baseline exp_line1_task2_baseline
+"$HOME/thesis_ws/scripts/run_task2_scan_frontend_experiment.sh" enhanced exp_line1_task2_enhanced
 ```
 
 如需同时录包：

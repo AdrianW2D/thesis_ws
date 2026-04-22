@@ -61,6 +61,10 @@ final/
 
 当前这三个包只建立边界，不实现完整节点逻辑。
 
+当前 thesis_ws 已开始长出 thesis 自己拥有的算法增强层：
+
+- `thesis_algorithms`：放置不修改 `catkin_ws` 的 thesis 自有算法节点。当前第一条实验线已落地扫描增强前端，用于 Task1 / Task2 的 baseline vs enhanced 对比。
+
 ## 面向后续三任务的承接关系
 
 - 任务 1 建图展示：使用 `launch/scenarios/task1_mapping_session.launch`、`config/experiments/profiles.yaml`、`maps/generated/`、`results/mapping/`
@@ -88,6 +92,7 @@ Task1 的工控机运行口径如下：
 - 地图输出位置：`$HOME/thesis_ws/maps/generated/`
 - 结果归档位置：`$HOME/thesis_ws/results/mapping/`
 - 地图保存脚本：`$HOME/thesis_ws/scripts/save_task1_map.sh`
+- 第一条实验线启动脚本：`$HOME/thesis_ws/scripts/run_task1_scan_frontend_experiment.sh`
 
 当前 Task1 的正式入口位于工作空间根目录 `launch/` 下，而不是某个 ROS 包内。
 因此本轮 smoke test 的推荐方式是使用 `roslaunch` 直接指向 launch 文件路径，而不是写成 `roslaunch <package> <file.launch>`。
@@ -96,6 +101,7 @@ Task1 的工控机运行口径如下：
 更完整的 Task1 说明见：
 
 - `docs/task1_mapping.md`
+- `docs/experiment_line1_scan_frontend.md`
 
 ## Task2 正式入口
 
@@ -118,10 +124,12 @@ Task2 当前的地图引用方式如下：
 - `config/maps/map_refs.yaml` 是 thesis 层地图索引
 - `active_map_id` 当前设为 `task1_lab_v01`
 - `scripts/run_task2_active_map.sh` 会根据 `active_map_id` 解析当前地图，并调用正式的 Task2 场景 launch
+- 第一条实验线验证脚本：`scripts/run_task2_scan_frontend_experiment.sh`
 
 更完整的 Task2 说明见：
 
 - `docs/task2_single_goal_nav.md`
+- `docs/experiment_line1_scan_frontend.md`
 
 ## Task3 A1 最小巡检入口
 

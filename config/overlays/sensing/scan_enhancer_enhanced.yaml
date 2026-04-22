@@ -1,0 +1,18 @@
+input_scan_topic: /scan
+output_scan_topic: /scan_thesis
+
+min_valid_range: 0.10
+max_valid_range: 10.0
+
+enable_sector_mask: false
+masked_angle_ranges_deg: []
+
+enable_jump_filter: true
+jump_threshold: 0.35
+neighbor_consistency_threshold: 0.12
+
+enable_temporal_median: true
+history_size: 3
+min_temporal_samples: 2
+
+log_every_n_scans: 30

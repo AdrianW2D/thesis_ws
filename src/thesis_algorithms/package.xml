@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>thesis_algorithms</name>
+  <version>0.1.0</version>
+  <description>Thesis-owned algorithm enhancement nodes for mapping and navigation experiments.</description>
+
+  <maintainer email="wangchong@example.com">Wang Chong</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>rospy</depend>
+  <depend>sensor_msgs</depend>
+
+  <export/>
+</package>

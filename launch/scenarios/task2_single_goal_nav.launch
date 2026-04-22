@@ -3,11 +3,16 @@
   <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
   <arg name="use_reference_sensing" default="true" />
   <arg name="use_reference_base" default="true" />
+  <arg name="use_scan_enhancer" default="false" />
   <arg name="start_rviz" default="true" />
   <arg name="record_bag" default="false" />
   <arg name="session_name" default="task2_single_goal_nav" />
   <arg name="rviz_config" default="$(find scout_description)/rviz/rviz_navigation.rviz" />
   <arg name="bag_prefix" default="$(env HOME)/thesis_ws/bags/navigation/$(arg session_name)" />
+  <arg name="scan_enhancer_param_file" default="$(dirname)/../../config/overlays/sensing/scan_enhancer_enhanced.yaml" />
+  <arg name="raw_scan_topic" default="/scan" />
+  <arg name="nav_scan_topic" default="/scan" />
+  <arg name="enhanced_scan_topic" default="/scan_thesis" />
   <arg name="initial_pose_x" default="0.0" />
   <arg name="initial_pose_y" default="0.0" />
   <arg name="initial_pose_a" default="0.0" />
@@ -21,9 +26,15 @@
   -->
   <include if="$(arg use_reference_base)" file="$(dirname)/../platform/reference_base_bridge.launch" />
   <include if="$(arg use_reference_sensing)" file="$(dirname)/../platform/reference_sensing_bridge.launch" />
+  <include if="$(arg use_scan_enhancer)" file="$(dirname)/../platform/thesis_scan_frontend.launch">
+    <arg name="input_scan_topic" value="$(arg raw_scan_topic)" />
+    <arg name="output_scan_topic" value="$(arg enhanced_scan_topic)" />
+    <arg name="param_file" value="$(arg scan_enhancer_param_file)" />
+  </include>
   <include file="$(dirname)/../platform/reference_localization_nav_core.launch">
     <arg name="map_id" value="$(arg map_id)" />
     <arg name="map_file" value="$(arg map_file)" />
+    <arg name="scan_topic" value="$(arg nav_scan_topic)" />
     <arg name="initial_pose_x" value="$(arg initial_pose_x)" />
     <arg name="initial_pose_y" value="$(arg initial_pose_y)" />
     <arg name="initial_pose_a" value="$(arg initial_pose_a)" />
@@ -37,6 +48,6 @@
   <include if="$(arg record_bag)" file="$(dirname)/../tools/record_session.launch">
     <arg name="session_name" value="$(arg session_name)" />
     <arg name="output_prefix" value="$(arg bag_prefix)" />
-    <arg name="topics" value="/map /odom /scan /amcl_pose /tf /tf_static /move_base_simple/goal /move_base/status /move_base/GlobalPlanner/plan /move_base/DWAPlannerROS/local_plan /cmd_vel" />
+    <arg name="topics" value="/map /odom /scan /scan_thesis /amcl_pose /tf /tf_static /move_base_simple/goal /move_base/status /move_base/GlobalPlanner/plan /move_base/DWAPlannerROS/local_plan /cmd_vel" />
   </include>
 </launch>

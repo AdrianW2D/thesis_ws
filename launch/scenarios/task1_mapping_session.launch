@@ -1,18 +1,29 @@
 <launch>
   <arg name="use_reference_sensing" default="true" />
   <arg name="use_reference_base" default="false" />
+  <arg name="use_scan_enhancer" default="false" />
   <arg name="start_rviz" default="true" />
   <arg name="record_bag" default="false" />
   <arg name="session_name" default="task1_mapping_session" />
   <arg name="mapping_param_file" default="$(dirname)/../../config/overlays/mapping/gmapping_task1.yaml" />
+  <arg name="scan_enhancer_param_file" default="$(dirname)/../../config/overlays/sensing/scan_enhancer_enhanced.yaml" />
+  <arg name="raw_scan_topic" default="/scan" />
+  <arg name="mapping_scan_topic" default="/scan" />
+  <arg name="enhanced_scan_topic" default="/scan_thesis" />
   <arg name="rviz_config" default="$(find scout_description)/rviz/mapping.rviz" />
   <arg name="bag_prefix" default="$(env HOME)/thesis_ws/bags/mapping/$(arg session_name)" />
 
   <!-- Platform capability bridge -->
   <include if="$(arg use_reference_sensing)" file="$(dirname)/../platform/reference_sensing_bridge.launch" />
   <include if="$(arg use_reference_base)" file="$(dirname)/../platform/reference_base_bridge.launch" />
+  <include if="$(arg use_scan_enhancer)" file="$(dirname)/../platform/thesis_scan_frontend.launch">
+    <arg name="input_scan_topic" value="$(arg raw_scan_topic)" />
+    <arg name="output_scan_topic" value="$(arg enhanced_scan_topic)" />
+    <arg name="param_file" value="$(arg scan_enhancer_param_file)" />
+  </include>
   <include file="$(dirname)/../platform/reference_mapping_core.launch">
     <arg name="param_file" value="$(arg mapping_param_file)" />
+    <arg name="scan_topic" value="$(arg mapping_scan_topic)" />
   </include>
 
   <!-- Thesis-owned RViz observation entry -->
@@ -25,6 +36,6 @@
   <include if="$(arg record_bag)" file="$(dirname)/../tools/record_session.launch">
     <arg name="session_name" value="$(arg session_name)" />
     <arg name="output_prefix" value="$(arg bag_prefix)" />
-    <arg name="topics" value="/scan /tf /tf_static /odom /map" />
+    <arg name="topics" value="/scan /scan_thesis /tf /tf_static /odom /map" />
   </include>
 </launch>
