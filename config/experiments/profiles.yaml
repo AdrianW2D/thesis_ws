@@ -131,3 +131,31 @@ profiles:
       - /move_base/DWAPlannerROS/local_plan
       - /cmd_vel
     note: Enhanced navigation validation profile for experiment line 1.
+
+  line2_execution_baseline:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task3_patrol_stub.launch
+    launcher_script_repo_relative: thesis_ws/scripts/run_task3_execution_experiment.sh
+    manager_param_file_repo_relative: thesis_ws/config/tasks/patrol_manager_line2_baseline.yaml
+    result_output_repo_relative: thesis_ws/results/patrol/
+    record_topics:
+      - /map
+      - /odom
+      - /scan
+      - /amcl_pose
+      - /move_base/status
+      - /cmd_vel
+    note: Baseline profile for experiment line 2. Direct task execution with minimal recovery logic.
+
+  line2_execution_enhanced:
+    scenario_launch_repo_relative: thesis_ws/launch/scenarios/task3_patrol_stub.launch
+    launcher_script_repo_relative: thesis_ws/scripts/run_task3_execution_experiment.sh
+    manager_param_file_repo_relative: thesis_ws/config/tasks/patrol_manager_line2_enhanced.yaml
+    result_output_repo_relative: thesis_ws/results/patrol/
+    record_topics:
+      - /map
+      - /odom
+      - /scan
+      - /amcl_pose
+      - /move_base/status
+      - /cmd_vel
+    note: Enhanced profile for experiment line 2. Thesis execution manager enables stage control, progress monitor and recovery.

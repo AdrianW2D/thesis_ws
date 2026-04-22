@@ -1,0 +1,27 @@
+task_set_id: single_goal_smoke_v01
+task_set_name: single_goal_smoke_demo
+map_id: task1_lab_v01
+frame_id: map
+description: >
+  Single-goal task file for line2 execution enhancement validation. Replace
+  the pose with a verified reachable target on the real map before use.
+
+points:
+  - point_id: G01
+    point_name: single_goal_target
+    sequence: 1
+    pose:
+      x: 0.8
+      y: 0.0
+      yaw: 0.0
+    tolerance:
+      xy: 0.30
+      yaw_deg: 15
+    task_type: checkpoint
+    stay_time_sec: 1.0
+    expected_action: arrive_only
+    enabled: true
+    tags:
+      - single_goal
+      - line2
+    note: Replace with a real target pose for Task2-style single-goal experiments.

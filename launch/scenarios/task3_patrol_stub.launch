@@ -3,6 +3,8 @@
   <arg name="map_file" default="$(env HOME)/thesis_ws/maps/generated/task1_lab_v01.yaml" />
   <arg name="task_file" default="$(dirname)/../../tasks/waypoint_sets/patrol_smoke_v01.yaml" />
   <arg name="result_dir" default="$(env HOME)/thesis_ws/results/patrol" />
+  <arg name="manager_param_file" default="$(dirname)/../../config/tasks/patrol_manager_params.yaml" />
+  <arg name="session_label" default="patrol" />
   <arg name="start_rviz" default="false" />
   <arg name="record_bag" default="false" />
 
@@ -24,8 +26,9 @@
   -->
 
   <node pkg="thesis_tasks" type="task_manager_node.py" name="task_manager_node" output="screen">
-    <rosparam command="load" file="$(dirname)/../../config/tasks/patrol_manager_params.yaml" />
+    <rosparam command="load" file="$(arg manager_param_file)" />
     <param name="task_file" value="$(arg task_file)" />
     <param name="result_dir" value="$(arg result_dir)" />
+    <param name="session_label" value="$(arg session_label)" />
   </node>
 </launch>

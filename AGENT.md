@@ -79,6 +79,15 @@ final/
 - Task2 的结果说明与截图应归档到 `$HOME/thesis_ws/results/navigation/`
 - Task2 当前只收口场景入口、地图引用、观察入口与结果规范，不做 AMCL / DWA / move_base 深调
 
+## Task3 约束
+
+- Task3 的正式入口为 `launch/scenarios/task3_patrol_stub.launch`
+- Task3 当前默认继续复用平台的 `map_server + amcl + move_base`，但任务执行逻辑必须落在 thesis_ws 自己的 `thesis_tasks` 中
+- `src/thesis_tasks/scripts/task_manager_node.py` 是当前 A1 与第二条实验线的主体节点，后续增强应优先围绕它演进，而不是重新拆成多节点大重构
+- Task3 的任务文件应落在 `$HOME/thesis_ws/tasks/waypoint_sets/`
+- Task3 的结果摘要与实验记录应落在 `$HOME/thesis_ws/results/patrol/`
+- 第二条实验线的 baseline / enhanced 对比，应通过 `config/tasks/patrol_manager_line2_baseline.yaml` 和 `config/tasks/patrol_manager_line2_enhanced.yaml` 控制，而不是修改平台导航内核
+
 ## 目录落位规则
 
 - `launch/`：只放 thesis 入口和 wrapper，不放 catkin_ws 源码副本，也不写死对平台目录内部的运行依赖。

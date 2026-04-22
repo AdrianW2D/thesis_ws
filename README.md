@@ -56,14 +56,18 @@ final/
 ## 第一轮最小模块
 
 - `thesis_bringup`：系统启动封装层。未来负责 thesis 正式入口与平台能力接入。
-- `thesis_tasks`：任务点配置层。未来负责 waypoint/巡检任务装载与执行编排。
+- `thesis_tasks`：任务点配置与任务执行层。当前已承担 Task3 A1 的 waypoint 装载、顺序执行、状态记录和结果摘要输出。
 - `thesis_recording`：实验记录层。未来负责 rosbag、日志、结果摘要与简单评测沉淀。
-
-当前这三个包只建立边界，不实现完整节点逻辑。
 
 当前 thesis_ws 已开始长出 thesis 自己拥有的算法增强层：
 
 - `thesis_algorithms`：放置不修改 `catkin_ws` 的 thesis 自有算法节点。当前第一条实验线已落地扫描增强前端，用于 Task1 / Task2 的 baseline vs enhanced 对比。
+- `thesis_tasks`：除 A1 巡检执行器外，当前还承载第二条实验线的任务级导航执行增强，用于 Task3 中 baseline vs enhanced 对比。
+
+## 当前 thesis 自有实验线
+
+- 第一条实验线：扫描前端增强。通过 `thesis_algorithms/scan_enhancer_node.py` 对 `/scan` 做 thesis 侧预处理，并在 Task1 / Task2 中比较 baseline 与 enhanced 的建图、定位导航表现。
+- 第二条实验线：任务级导航执行增强。通过 `thesis_tasks/task_manager_node.py` 在不修改 `move_base` 内核的前提下，为 Task3 增加阶段执行、进度监测、卡滞恢复、thesis 自主接受判定和结构化结果摘要。
 
 ## 面向后续三任务的承接关系
 
@@ -149,6 +153,17 @@ Task3 A1 当前具备的 thesis 侧能力：
 - 顺序发送 waypoint 到 `move_base`
 - 支持 `retry_limit`、`goal_timeout`、`skip_on_failure`
 - 在 `results/patrol/` 输出最小 session 摘要
+- 支持第二条实验线的 `baseline/enhanced` 执行模式切换
+- enhanced 模式下支持两阶段执行、进度监测、卡滞恢复和 thesis 接受判定
+
+Task3 A1 当前配套的第二条实验线入口：
+
+- 统一实验脚本：`scripts/run_task3_execution_experiment.sh`
+- baseline 参数：`config/tasks/patrol_manager_line2_baseline.yaml`
+- enhanced 参数：`config/tasks/patrol_manager_line2_enhanced.yaml`
+- 单点验证任务：`tasks/waypoint_sets/single_goal_smoke_v01.yaml`
+- 对比模板脚本：`scripts/init_line2_execution_record.sh`
+- 详细说明：`docs/experiment_line2_execution_enhancement.md`
 
 Task3 A1 当前仍然不做：
 

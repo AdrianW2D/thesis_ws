@@ -116,6 +116,32 @@ Task2 是 thesis_ws 中第二条正式收口的实验链，目标不是优化导
 - `scripts/run_task2_active_map.sh`：active map 启动脚本
 - `results/navigation/`：结果归档目录
 
+## Task3 在 thesis_ws 中的角色
+
+Task3 是 thesis_ws 中长出 thesis 自己任务逻辑主体的入口。A1 阶段的目标不是完成复杂巡检策略，而是先让 thesis_ws 拥有自己的任务执行器，并把 waypoint 巡检、状态流、失败处理和结果沉淀从平台 demo 外部接管回来。
+
+当前 Task3 的组织方式是：
+
+- `scenarios/task3_patrol_stub.launch`：Task3 A1 正式场景入口
+- `platform/reference_localization_nav_core.launch`：继续复用平台的 `map_server + amcl + move_base`
+- `src/thesis_tasks/scripts/task_manager_node.py`：thesis 自己的任务执行器
+- `tasks/waypoint_sets/`：任务文件与 waypoint 集合
+- `config/tasks/patrol_manager_params.yaml`：默认任务执行参数
+- `results/patrol/`：巡检摘要与实验结果目录
+
+## thesis 自有实验线
+
+当前 thesis_ws 内部已经形成两条由 thesis 自己管理的实验线：
+
+- 第一条实验线：扫描前端增强
+  - 入口核心：`platform/thesis_scan_frontend.launch`
+  - 作用位置：Task1 建图链、Task2 定位导航链
+  - 对比方式：baseline 使用 `/scan`，enhanced 使用 `/scan_thesis`
+- 第二条实验线：任务级导航执行增强
+  - 入口核心：`src/thesis_tasks/scripts/task_manager_node.py`
+  - 作用位置：Task3 waypoint 巡检执行链
+  - 对比方式：baseline 使用直接单阶段目标执行；enhanced 增加阶段控制、进度监测、卡滞恢复与 thesis 接受判定
+
 ## 为什么不能直接把官方耦合 launch 当 thesis 正式入口
 
 从本地平级 `catkin_ws` 的上游结构现状看：

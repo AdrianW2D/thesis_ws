@@ -7,6 +7,7 @@ THESIS_WS="$(cd "${SCRIPT_DIR}/.." && pwd)"
 MAP_REFS="${THESIS_MAP_REFS:-${THESIS_WS}/config/maps/map_refs.yaml}"
 TASK3_LAUNCH="${THESIS_TASK3_LAUNCH:-${THESIS_WS}/launch/scenarios/task3_patrol_stub.launch}"
 TASK_FILE="${THESIS_TASK3_TASK_FILE:-${THESIS_WS}/tasks/waypoint_sets/patrol_smoke_v01.yaml}"
+MANAGER_PARAM_FILE="${THESIS_TASK3_MANAGER_PARAM_FILE:-${THESIS_WS}/config/tasks/patrol_manager_params.yaml}"
 CATKIN_WS="${THESIS_CATKIN_WS:-${HOME}/catkin_ws}"
 
 if ! command -v roslaunch >/dev/null 2>&1; then
@@ -21,6 +22,11 @@ fi
 
 if [[ ! -f "${TASK_FILE}" ]]; then
   echo "Task file not found: ${TASK_FILE}" >&2
+  exit 1
+fi
+
+if [[ ! -f "${MANAGER_PARAM_FILE}" ]]; then
+  echo "Task manager param file not found: ${MANAGER_PARAM_FILE}" >&2
   exit 1
 fi
 
@@ -127,9 +133,11 @@ echo "Launching Task3 patrol A1 with active_map_id=${active_map_id}"
 echo "Resolved map source: ${map_source}"
 echo "Using map file: ${map_file}"
 echo "Using task file: ${TASK_FILE}"
+echo "Using manager params: ${MANAGER_PARAM_FILE}"
 
 exec roslaunch "${TASK3_LAUNCH}" \
   map_id:="${active_map_id}" \
   map_file:="${map_file}" \
   task_file:="${TASK_FILE}" \
+  manager_param_file:="${MANAGER_PARAM_FILE}" \
   "$@"
