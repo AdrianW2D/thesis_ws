@@ -106,6 +106,7 @@ Task1 的工控机运行口径如下：
 
 - `docs/task1_mapping.md`
 - `docs/experiment_line1_scan_frontend.md`
+- `docs/dda7d0c_material_collection_guide.md`
 
 ## Task2 正式入口
 
@@ -134,6 +135,7 @@ Task2 当前的地图引用方式如下：
 
 - `docs/task2_single_goal_nav.md`
 - `docs/experiment_line1_scan_frontend.md`
+- `docs/dda7d0c_material_collection_guide.md`
 
 ## Task3 A1 最小巡检入口
 
@@ -166,6 +168,7 @@ Task3 A1 当前配套的第二条实验线入口：
 - 单点验证任务：`tasks/waypoint_sets/single_goal_smoke_v01.yaml`
 - 对比模板脚本：`scripts/init_line2_execution_record.sh`
 - 详细说明：`docs/experiment_line2_execution_enhancement.md`
+- 完整素材采集流程：`docs/dda7d0c_material_collection_guide.md`
 
 Task3 A1 当前仍然不做：
 

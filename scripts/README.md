@@ -17,6 +17,7 @@
 
 当前已提供：
 
+- `check_dda7d0c_material_prep.sh`：`dda7d0c` 版本素材采集前置检查脚本，用于确认版本、活动地图、关键任务文件和实验脚本是否齐全
 - `save_task1_map.sh`：将地图保存到 `maps/generated/`，并在 `results/mapping/` 中生成最小结果说明
 - `run_task2_active_map.sh`：读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，解析当前地图后启动 Task2 正式场景入口
 - `run_task1_scan_frontend_experiment.sh`：第一条实验线的 Task1 启动脚本，按 `baseline/enhanced` 启动建图并初始化结果记录
@@ -26,3 +27,7 @@
 - `init_line2_execution_record.sh`：生成第二条实验线的 baseline/enhanced 对比模板，便于汇总单点与巡检任务执行结果
 - `run_task3_active_map.sh`：读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，解析当前地图并加载 smoke patrol 任务后启动 Task3 A1 场景入口
 - `run_task3_waypoint_capture_active_map.sh`：读取当前活动地图，复用 Task2 的 RViz 取点模式，并把每次 `2D Nav Goal` 点击自动保存为 Task3 waypoint YAML
+
+推荐配套文档：
+
+- `docs/dda7d0c_material_collection_guide.md`：`dda7d0c` 主线版本的完整素材采集指南，覆盖 Task1 / Task2 / Task3 和 line2 的实际测试流程

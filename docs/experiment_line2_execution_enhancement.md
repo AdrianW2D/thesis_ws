@@ -11,6 +11,10 @@
 
 Task3 当前默认会启动 RViz，并在收到一次手工 `2D Pose Estimate` 之后才开始自动下发 waypoint。这样可以避免 AMCL 尚未校准时，任务执行器过早发送目标，出现“全局路径已规划但底盘不前进”的假启动现象。
 
+如果当前目标是按主线 `dda7d0c` 采集完整素材，优先参考：
+
+- `docs/dda7d0c_material_collection_guide.md`
+
 ## Thesis-owned assets
 
 - 执行节点：`src/thesis_tasks/scripts/task_manager_node.py`
