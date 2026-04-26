@@ -1,0 +1,51 @@
+schema_version: 1
+
+naming_rules:
+  coverage_file: "coverage_<scene>_vNN.yaml"
+  generated_task_file: "coverage_<scene>_generated_vNN.yaml"
+  default_frame_id: "map"
+  supported_area_type: "rectangle"
+
+coverage_file_required_fields:
+  - coverage_task_id
+  - coverage_task_name
+  - map_id
+  - frame_id
+  - area
+  - sweep
+  - output
+
+area_required_fields:
+  - type
+  - origin.x
+  - origin.y
+  - width
+  - height
+
+sweep_required_fields:
+  - direction
+  - lane_spacing
+  - boundary_margin
+  - start_corner
+
+output_required_fields:
+  - task_file
+  - default_task_type
+
+supported_area_types:
+  - rectangle
+
+supported_sweep_directions:
+  - x_major
+  - y_major
+
+supported_start_corners:
+  - lower_left
+  - lower_right
+  - upper_left
+  - upper_right
+
+usage_note: >
+  This schema defines the thesis-side offline coverage task input. Phase A2 only
+  supports rectangle coverage areas and generates a standard waypoint YAML that
+  can be executed by the existing Task3 patrol manager.

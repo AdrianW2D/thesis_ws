@@ -27,7 +27,10 @@
 - `init_line2_execution_record.sh`：生成第二条实验线的 baseline/enhanced 对比模板，便于汇总单点与巡检任务执行结果
 - `run_task3_active_map.sh`：读取 `config/maps/map_refs.yaml` 中的 `active_map_id`，解析当前地图并加载 smoke patrol 任务后启动 Task3 A1 场景入口
 - `run_task3_waypoint_capture_active_map.sh`：读取当前活动地图，复用 Task2 的 RViz 取点模式，并把每次 `2D Nav Goal` 点击自动保存为 Task3 waypoint YAML
+- `generate_task3_coverage_task.sh`：读取矩形 coverage 配置并生成弓形 waypoint YAML，供 Task3 正式入口直接执行
 
 推荐配套文档：
 
 - `docs/dda7d0c_material_collection_guide.md`：`dda7d0c` 主线版本的完整素材采集指南，覆盖 Task1 / Task2 / Task3 和 line2 的实际测试流程
+- `docs/task3_coverage_material_collection_guide.md`：Task3 弓形覆盖生成、执行验证与论文素材收集指南
+- `docs/line1_line2_coverage_material_collection_guide.md`：line1、line2 和弓形覆盖三类实验的统一采集顺序指南

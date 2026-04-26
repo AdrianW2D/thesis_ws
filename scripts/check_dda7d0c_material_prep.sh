@@ -89,6 +89,7 @@ check_script "${THESIS_WS}/scripts/run_task3_active_map.sh" "Task3 patrol launch
 check_script "${THESIS_WS}/scripts/run_task3_waypoint_capture_active_map.sh" "Task3 capture launcher"
 check_script "${THESIS_WS}/scripts/run_task3_execution_experiment.sh" "line2 launcher"
 check_script "${THESIS_WS}/scripts/init_line2_execution_record.sh" "line2 record template"
+check_script "${THESIS_WS}/scripts/generate_task3_coverage_task.sh" "Coverage generator launcher"
 
 if [[ -f "${EXPECTED_MAP_FILE}" ]]; then
   pass "Expected Task1/Task2/Task3 map exists"
@@ -137,8 +138,10 @@ fi
 check_file "${THESIS_WS}/config/tasks/patrol_manager_params.yaml" "Task3 default manager config"
 check_file "${THESIS_WS}/config/tasks/patrol_manager_line2_baseline.yaml" "line2 baseline config"
 check_file "${THESIS_WS}/config/tasks/patrol_manager_line2_enhanced.yaml" "line2 enhanced config"
+check_file "${THESIS_WS}/config/tasks/coverage_schema.yaml" "Coverage schema"
 check_file "${THESIS_WS}/tasks/waypoint_sets/patrol_smoke_v01.yaml" "Task3 smoke patrol task"
 check_file "${THESIS_WS}/tasks/waypoint_sets/single_goal_smoke_v01.yaml" "line2 single-goal smoke task"
+check_file "${THESIS_WS}/tasks/coverage_sets/coverage_rect_smoke_v01.yaml" "Coverage smoke config"
 
 for dir_path in \
   "${THESIS_WS}/results/mapping" \
@@ -168,6 +171,8 @@ echo "3. Run Task3 patrol:"
 echo "   THESIS_TASK3_TASK_FILE=\"${TASK_FILE}\" \"\$HOME/thesis_ws/scripts/run_task3_active_map.sh\""
 echo "4. Run line2 comparison if needed:"
 echo "   \"\$HOME/thesis_ws/scripts/init_line2_execution_record.sh\" exp_line2_lab_v02"
+echo "5. Generate coverage waypoints if needed:"
+echo "   \"\$HOME/thesis_ws/scripts/generate_task3_coverage_task.sh\" \"\$HOME/thesis_ws/tasks/coverage_sets/coverage_rect_smoke_v01.yaml\""
 
 echo
 if (( failures > 0 )); then

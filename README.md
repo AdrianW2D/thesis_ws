@@ -68,12 +68,14 @@ final/
 
 - 第一条实验线：扫描前端增强。通过 `thesis_algorithms/scan_enhancer_node.py` 对 `/scan` 做 thesis 侧预处理，并在 Task1 / Task2 中比较 baseline 与 enhanced 的建图、定位导航表现。
 - 第二条实验线：任务级导航执行增强。通过 `thesis_tasks/task_manager_node.py` 在不修改 `move_base` 内核的前提下，为 Task3 增加阶段执行、进度监测、卡滞恢复、thesis 自主接受判定和结构化结果摘要。
+- Task3 A2 预留增强：矩形区域弓形覆盖。通过 `thesis_tasks/coverage_path_generator.py` 先生成 coverage waypoint YAML，再复用现有 Task3 patrol 执行链。
 
 ## 面向后续三任务的承接关系
 
 - 任务 1 建图展示：使用 `launch/scenarios/task1_mapping_session.launch`、`config/experiments/profiles.yaml`、`maps/generated/`、`results/mapping/`
 - 任务 2 单点导航：使用 `launch/scenarios/task2_single_goal_nav.launch`、`config/maps/map_refs.yaml`、`results/navigation/`
 - 任务 3 多点巡检雏形：使用 `launch/scenarios/task3_patrol_stub.launch`、`tasks/waypoint_sets/`、`config/tasks/waypoint_schema.yaml`、`results/patrol/`
+- 任务 3 区域覆盖增强：使用 `tasks/coverage_sets/`、`config/tasks/coverage_schema.yaml`、`scripts/generate_task3_coverage_task.sh` 先生成 waypoint，再复用 Task3 正式入口执行
 
 ## Task1 正式入口
 
@@ -107,6 +109,7 @@ Task1 的工控机运行口径如下：
 - `docs/task1_mapping.md`
 - `docs/experiment_line1_scan_frontend.md`
 - `docs/dda7d0c_material_collection_guide.md`
+- `docs/line1_line2_coverage_material_collection_guide.md`
 
 ## Task2 正式入口
 
@@ -136,6 +139,7 @@ Task2 当前的地图引用方式如下：
 - `docs/task2_single_goal_nav.md`
 - `docs/experiment_line1_scan_frontend.md`
 - `docs/dda7d0c_material_collection_guide.md`
+- `docs/line1_line2_coverage_material_collection_guide.md`
 
 ## Task3 A1 最小巡检入口
 
@@ -169,13 +173,31 @@ Task3 A1 当前配套的第二条实验线入口：
 - 对比模板脚本：`scripts/init_line2_execution_record.sh`
 - 详细说明：`docs/experiment_line2_execution_enhancement.md`
 - 完整素材采集流程：`docs/dda7d0c_material_collection_guide.md`
+- coverage 测试与论文素材指南：`docs/task3_coverage_material_collection_guide.md`
+- line1 + line2 + coverage 总指南：`docs/line1_line2_coverage_material_collection_guide.md`
 
 Task3 A1 当前仍然不做：
 
 - 自定义 msg/srv
 - 多节点拆分
-- 覆盖路径与策略优化
+- 在线覆盖路径与复杂策略优化
 - 复杂上位机或可视化交互
+
+Task3 当前新增的 A2 方向为“离线 coverage 任务生成”：
+
+- coverage 输入目录：`tasks/coverage_sets/`
+- coverage schema：`config/tasks/coverage_schema.yaml`
+- 生成器：`src/thesis_tasks/scripts/coverage_path_generator.py`
+- 辅助脚本：`scripts/generate_task3_coverage_task.sh`
+- 输出 waypoint：`tasks/waypoint_sets/`
+
+当前 coverage 范围控制如下：
+
+- 只支持矩形区域
+- 只支持离线生成
+- 只做弓形 waypoint 生成
+- 继续复用现有 Task3 patrol 执行器
+- 不改 `catkin_ws`
 
 ## 本地平级视图与运行时视图
 

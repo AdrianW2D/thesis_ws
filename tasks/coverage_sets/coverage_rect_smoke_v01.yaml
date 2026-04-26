@@ -1,0 +1,33 @@
+coverage_task_id: coverage_rect_smoke_v01
+coverage_task_name: coverage_rect_smoke_demo
+map_id: task1_lab_v02
+frame_id: map
+description: >
+  Rectangle coverage smoke config for the thesis-side bow coverage generator.
+  Replace the origin and size with verified coordinates from the real map
+  before running on the robot.
+
+area:
+  type: rectangle
+  origin:
+    x: 0.0
+    y: 0.0
+  width: 2.4
+  height: 1.6
+
+sweep:
+  direction: x_major
+  lane_spacing: 0.45
+  boundary_margin: 0.15
+  start_corner: lower_left
+
+output:
+  task_file: "$HOME/thesis_ws/tasks/waypoint_sets/coverage_rect_smoke_generated_v01.yaml"
+  default_task_type: inspect
+  default_stay_time_sec: 1.0
+  tolerance_xy: 0.30
+  tolerance_yaw_deg: 20.0
+  tag: coverage_smoke
+  note: >
+    Example output only. Replace the rectangle definition with a verified
+    coverage area from the real map before execution.

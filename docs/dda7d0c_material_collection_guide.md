@@ -309,7 +309,20 @@ enhanced：
 
 最终补充 `exp_line2_lab_v02_comparison.md` 中的对比项。
 
-## 6. 常见问题快速判断
+## 6. Coverage 扩展入口
+
+如果本轮需要继续采集“矩形区域弓形覆盖”相关素材，请参考：
+
+- `docs/task3_coverage_material_collection_guide.md`
+
+该指南覆盖：
+
+- coverage 配置准备
+- coverage waypoint 生成
+- Task3 coverage 执行
+- 论文方法图与结果图素材收集
+
+## 7. 常见问题快速判断
 
 ### 没生成 `2026_4.yaml`
 
@@ -355,7 +368,7 @@ rostopic echo -n 5 /move_base/status
 rostopic echo -n 5 /cmd_vel
 ```
 
-## 验收标准
+## 8. 验收标准
 
 ### Task1
 
